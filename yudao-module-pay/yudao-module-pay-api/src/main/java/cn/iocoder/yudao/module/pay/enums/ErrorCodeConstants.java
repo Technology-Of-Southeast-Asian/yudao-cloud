@@ -89,4 +89,8 @@ public interface ErrorCodeConstants {
     ErrorCode DEMO_ORDER_REFUND_FAIL_REFUND_ORDER_ID_ERROR = new ErrorCode(1_007_900_009, "发起退款失败，退款单编号不匹配");
     ErrorCode DEMO_ORDER_REFUND_FAIL_REFUND_PRICE_NOT_MATCH = new ErrorCode(1_007_900_010, "发起退款失败，退款单金额不匹配");
 
+    //提现模块
+    ErrorCode WITHDRAW_NOT_EXISTS = new ErrorCode(1_008_001_001, "提现订单 不存在");
+
+
 }

@@ -117,6 +117,10 @@
             <groupId>cn.iocoder.cloud</groupId>
             <artifactId>yudao-spring-boot-starter-excel</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.iocoder.cloud</groupId>
+            <artifactId>yudao-spring-boot-starter-protection</artifactId>
+        </dependency>
 
     </dependencies>
 

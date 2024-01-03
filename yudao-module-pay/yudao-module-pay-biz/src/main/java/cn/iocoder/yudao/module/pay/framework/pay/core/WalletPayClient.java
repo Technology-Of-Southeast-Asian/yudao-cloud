@@ -17,8 +17,8 @@ import cn.iocoder.yudao.framework.pay.core.enums.refund.PayRefundStatusRespEnum;
 import cn.iocoder.yudao.module.pay.dal.dataobject.order.PayOrderExtensionDO;
 import cn.iocoder.yudao.module.pay.dal.dataobject.refund.PayRefundDO;
 import cn.iocoder.yudao.module.pay.dal.dataobject.wallet.PayWalletTransactionDO;
-import cn.iocoder.yudao.module.pay.enums.wallet.PayWalletBizTypeEnum;
 import cn.iocoder.yudao.module.pay.enums.order.PayOrderStatusEnum;
+import cn.iocoder.yudao.module.pay.enums.wallet.PayWalletBizTypeEnum;
 import cn.iocoder.yudao.module.pay.service.order.PayOrderService;
 import cn.iocoder.yudao.module.pay.service.refund.PayRefundService;
 import cn.iocoder.yudao.module.pay.service.wallet.PayWalletService;
@@ -119,6 +119,21 @@ public class WalletPayClient extends AbstractPayClient<NonePayClientConfig> {
         // 其它状态为无效状态
         log.error("[doGetOrder] 支付单 {} 的状态不正确", outTradeNo);
         throw new IllegalStateException(String.format("支付单[%s] 状态不正确", outTradeNo));
+    }
+
+    @Override
+    protected PayOrderRespDTO doUnifiedWithdraw(PayOrderUnifiedReqDTO reqDTO) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doParseWithdrawNotify(Map<String, String> params, String body) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doGetWithdraw(String outTradeNo) throws Throwable {
+        return null;
     }
 
     @Override
