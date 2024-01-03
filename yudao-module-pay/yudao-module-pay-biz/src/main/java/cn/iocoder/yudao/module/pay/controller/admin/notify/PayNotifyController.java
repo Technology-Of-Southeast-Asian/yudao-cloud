@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpUtil;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.framework.idempotent.core.annotation.Idempotent;
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.yudao.framework.pay.core.client.PayClient;
 import cn.iocoder.yudao.framework.pay.core.client.dto.order.PayOrderRespDTO;
@@ -119,6 +120,7 @@ public class PayNotifyController {
     @Operation(summary = "支付渠道【代付】回调")
     @PermitAll
     @OperateLog(enable = false) // 回调地址，无需记录操作日志
+    @Idempotent(timeout = 10, message = "正在添加用户中，请勿重复提交")
     public String withdrawNotify(@RequestParam(required = false) Map<String, String> params,
                                  @RequestBody(required = false) String body) {
         log.info("[notifyOrder][回调数据({}/{})]", params, body);
