@@ -129,6 +129,61 @@ public abstract class AbstractPayClient<Config extends PayClientConfig> implemen
     protected abstract PayOrderRespDTO doGetOrder(String outTradeNo)
             throws Throwable;
 
+    // ============ 提现相关 ==========
+
+    @Override
+    public final PayOrderRespDTO unifiedWithdraw(PayOrderUnifiedReqDTO reqDTO) {
+        ValidationUtils.validate(reqDTO);
+        // 执行统一下单
+        PayOrderRespDTO resp;
+        try {
+            resp = doUnifiedWithdraw(reqDTO);
+        } catch (ServiceException ex) { // 业务异常，都是实现类已经翻译，所以直接抛出即可
+            throw ex;
+        } catch (Throwable ex) {
+            // 系统异常，则包装成 PayException 异常抛出
+            log.error("[unifiedOrder][客户端({}) request({}) 发起支付异常]",
+                    getId(), toJsonString(reqDTO), ex);
+            throw buildPayException(ex);
+        }
+        return resp;
+    }
+
+    protected abstract PayOrderRespDTO doUnifiedWithdraw(PayOrderUnifiedReqDTO reqDTO)
+            throws Throwable;
+
+    @Override
+    public final PayOrderRespDTO parseWithdrawNotify(Map<String, String> params, String body) {
+        try {
+            return doParseWithdrawNotify(params, body);
+        } catch (ServiceException ex) { // 业务异常，都是实现类已经翻译，所以直接抛出即可
+            throw ex;
+        } catch (Throwable ex) {
+            log.error("[parseOrderNotify][客户端({}) params({}) body({}) 解析失败]",
+                    getId(), params, body, ex);
+            throw buildPayException(ex);
+        }
+    }
+
+    protected abstract PayOrderRespDTO doParseWithdrawNotify(Map<String, String> params, String body)
+            throws Throwable;
+
+    @Override
+    public final PayOrderRespDTO getWithdraw(String outTradeNo) {
+        try {
+            return doGetWithdraw(outTradeNo);
+        } catch (ServiceException ex) { // 业务异常，都是实现类已经翻译，所以直接抛出即可
+            throw ex;
+        } catch (Throwable ex) {
+            log.error("[getOrder][客户端({}) outTradeNo({}) 查询支付单异常]",
+                    getId(), outTradeNo, ex);
+            throw buildPayException(ex);
+        }
+    }
+
+    protected abstract PayOrderRespDTO doGetWithdraw(String outTradeNo)
+            throws Throwable;
+
     // ============ 退款相关 ==========
 
     @Override

@@ -50,6 +50,33 @@ public interface PayClient {
      */
     PayOrderRespDTO getOrder(String outTradeNo);
 
+    // ============ 提现相关 ==========
+
+    /**
+     * 调用提现渠道，统一下单
+     *
+     * @param reqDTO 下单信息
+     * @return 支付订单信息
+     */
+    PayOrderRespDTO unifiedWithdraw(PayOrderUnifiedReqDTO reqDTO);
+
+    /**
+     * 解析 Withdraw 回调数据
+     *
+     * @param params HTTP 回调接口 content type 为 application/x-www-form-urlencoded 的所有参数
+     * @param body   HTTP 回调接口的 request body
+     * @return 支付订单信息
+     */
+    PayOrderRespDTO parseWithdrawNotify(Map<String, String> params, String body);
+
+    /**
+     * 获得提现订单信息
+     *
+     * @param outTradeNo 外部订单号
+     * @return 支付订单信息
+     */
+    PayOrderRespDTO getWithdraw(String outTradeNo);
+
     // ============ 退款相关 ==========
 
     /**

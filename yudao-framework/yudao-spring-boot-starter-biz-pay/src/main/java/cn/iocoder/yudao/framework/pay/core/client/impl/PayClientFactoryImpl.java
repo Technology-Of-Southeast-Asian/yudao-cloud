@@ -7,6 +7,7 @@ import cn.iocoder.yudao.framework.pay.core.client.PayClientConfig;
 import cn.iocoder.yudao.framework.pay.core.client.PayClientFactory;
 import cn.iocoder.yudao.framework.pay.core.client.impl.alipay.*;
 import cn.iocoder.yudao.framework.pay.core.client.impl.mock.MockPayClient;
+import cn.iocoder.yudao.framework.pay.core.client.impl.p51pay.P51PayClient;
 import cn.iocoder.yudao.framework.pay.core.client.impl.weixin.*;
 import cn.iocoder.yudao.framework.pay.core.enums.channel.PayChannelEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,8 @@ public class PayClientFactoryImpl implements PayClientFactory {
         clientClass.put(ALIPAY_BAR, AlipayBarPayClient.class);
         // Mock 支付客户端
         clientClass.put(MOCK, MockPayClient.class);
+        //51pay
+        clientClass.put(P_51PAY, P51PayClient.class);
     }
 
     @Override

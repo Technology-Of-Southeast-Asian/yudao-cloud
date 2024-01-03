@@ -4,6 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.iocoder.yudao.framework.pay.core.client.PayClientConfig;
 import cn.iocoder.yudao.framework.pay.core.client.impl.NonePayClientConfig;
 import cn.iocoder.yudao.framework.pay.core.client.impl.alipay.AlipayPayClientConfig;
+import cn.iocoder.yudao.framework.pay.core.client.impl.p51pay.P51PayClientConfig;
 import cn.iocoder.yudao.framework.pay.core.client.impl.weixin.WxPayClientConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,9 @@ public enum PayChannelEnum {
     ALIPAY_BAR("alipay_bar", "支付宝条码支付", AlipayPayClientConfig.class),
     MOCK("mock", "模拟支付", NonePayClientConfig.class),
 
-    WALLET("wallet", "钱包支付", NonePayClientConfig.class);
+    WALLET("wallet", "钱包支付", NonePayClientConfig.class),
+
+    P_51PAY("P51pay", "51pay", P51PayClientConfig.class);
 
     /**
      * 编码

@@ -1,6 +1,7 @@
 package cn.iocoder.yudao.module.pay.controller.admin.notify;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.http.HttpUtil;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
@@ -22,14 +23,15 @@ import cn.iocoder.yudao.module.pay.service.refund.PayRefundService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.annotation.Resource;
-import jakarta.annotation.security.PermitAll;
-import jakarta.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +77,64 @@ public class PayNotifyController {
         PayOrderRespDTO notify = payClient.parseOrderNotify(params, body);
         orderService.notifyOrder(channelId, notify);
         return "success";
+    }
+
+    /**
+     * 参数没有channelid
+     *
+     * @param params
+     * @param body
+     * @return
+     */
+    @PostMapping(value = "/order")
+    @Operation(summary = "支付渠道【支付】回调")
+    @PermitAll
+    @OperateLog(enable = false) // 回调地址，无需记录操作日志
+    public String notifyOrder(@RequestParam(required = false) Map<String, String> params,
+                              @RequestBody(required = false) String body) {
+        log.info("[notifyOrder][回调数据({}/{})]", params, body);
+        //这里加一个查询 因为 channelId 可能为空
+        Map<String, String> bodyObj = HttpUtil.decodeParamMap(body, StandardCharsets.UTF_8);
+        Long channelId = orderService.getOrderExtensionByNo(bodyObj.get("sysOrderId")).getChannelId();
+        // 1. 校验支付渠道是否存在
+        PayClient payClient = channelService.getPayClient(channelId);
+        if (payClient == null) {
+            log.error("[notifyCallback][渠道编号({}) 找不到对应的支付客户端]", channelId);
+            throw exception(CHANNEL_NOT_FOUND);
+        }
+        // 2. 解析通知数据
+        PayOrderRespDTO notify = payClient.parseOrderNotify(params, body);
+        orderService.notifyOrder(channelId, notify);
+        return "SUCCESS";
+    }
+
+    /**
+     * 参数没有channelid
+     *
+     * @param params
+     * @param body
+     * @return
+     */
+    @PostMapping(value = "/withdraw")
+    @Operation(summary = "支付渠道【代付】回调")
+    @PermitAll
+    @OperateLog(enable = false) // 回调地址，无需记录操作日志
+    public String withdrawNotify(@RequestParam(required = false) Map<String, String> params,
+                                 @RequestBody(required = false) String body) {
+        log.info("[notifyOrder][回调数据({}/{})]", params, body);
+        //这里加一个查询 因为 channelId 可能为空
+        Map<String, String> bodyObj = HttpUtil.decodeParamMap(body, StandardCharsets.UTF_8);
+        Long channelId = orderService.getOrderExtensionByNo(bodyObj.get("sysOrderId")).getChannelId();
+        // 1. 校验支付渠道是否存在
+        PayClient payClient = channelService.getPayClient(channelId);
+        if (payClient == null) {
+            log.error("[notifyCallback][渠道编号({}) 找不到对应的支付客户端]", channelId);
+            throw exception(CHANNEL_NOT_FOUND);
+        }
+        // 2. 解析通知数据
+        PayOrderRespDTO notify = payClient.parseWithdrawNotify(params, body);
+        orderService.notifyOrder(channelId, notify);
+        return "SUCCESS";
     }
 
     @PostMapping(value = "/refund/{channelId}")

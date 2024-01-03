@@ -301,4 +301,20 @@ public abstract class AbstractAlipayPayClient extends AbstractPayClient<AlipayPa
         return LocalDateTimeUtil.parse(str, NORM_DATETIME_FORMATTER);
     }
 
+
+    @Override
+    protected PayOrderRespDTO doUnifiedWithdraw(PayOrderUnifiedReqDTO reqDTO) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doParseWithdrawNotify(Map<String, String> params, String body) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doGetWithdraw(String outTradeNo) throws Throwable {
+        return null;
+    }
+
 }

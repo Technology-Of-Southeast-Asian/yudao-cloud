@@ -71,4 +71,20 @@ public class MockPayClient extends AbstractPayClient<NonePayClientConfig> {
         throw new UnsupportedOperationException("待实现");
     }
 
+
+    @Override
+    protected PayOrderRespDTO doUnifiedWithdraw(PayOrderUnifiedReqDTO reqDTO) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doParseWithdrawNotify(Map<String, String> params, String body) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doGetWithdraw(String outTradeNo) throws Throwable {
+        return null;
+    }
+
 }

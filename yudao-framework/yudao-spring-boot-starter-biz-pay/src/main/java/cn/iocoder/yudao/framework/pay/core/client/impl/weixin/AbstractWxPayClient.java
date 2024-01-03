@@ -473,4 +473,20 @@ public abstract class AbstractWxPayClient extends AbstractPayClient<WxPayClientC
         return e.getReturnMsg();
     }
 
+
+    @Override
+    protected PayOrderRespDTO doUnifiedWithdraw(PayOrderUnifiedReqDTO reqDTO) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doParseWithdrawNotify(Map<String, String> params, String body) throws Throwable {
+        return null;
+    }
+
+    @Override
+    protected PayOrderRespDTO doGetWithdraw(String outTradeNo) throws Throwable {
+        return null;
+    }
+
 }
